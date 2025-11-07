@@ -1,16 +1,12 @@
-# MathDataHub
-
 [![Frontend Tests](https://github.com/MathHubInfo/mhd/actions/workflows/frontend.yml/badge.svg)](https://github.com/MathHubInfo/mhd/actions/workflows/frontend.yml)
 [![Backend Tests](https://github.com/MathHubInfo/mhd/actions/workflows/backend.yml/badge.svg)](https://github.com/MathHubInfo/mhd/actions/workflows/backend.yml)
 [![Docker Build](https://github.com/MathHubInfo/mhd/actions/workflows/docker_build.yml/badge.svg)](https://github.com/MathHubInfo/mhd/actions/workflows/docker_build.yml)
 
-MathDataHub is a system to provide universal infrastructure for Mathematical Data.
-See the paper [Towards a Unified Mathematical Data Infrastructure: Database and Interface Generation](https://kwarc.info/people/mkohlhase/papers/cicm19-MDH.pdf)
-for more details.
+# MathDataHub
+
+[MathDataHub](https://github.com/MathHubInfo/mhd) started out as a complete redesign of the [DiscreteZOO web portal](https://github.com/orgs/DiscreteZOO/) at the Research Group of the Professorship for Knowledge Representation and Processing ([KWARC](https://kwarc.info/)) at [FAU Erlangen-Nürnberg](https://fau.de/) (department of Computer Science), during the years 2019-2022. 
 
 This repository contains the MathDataHub Implementation consisting of a [Django](https://www.djangoproject.com/)-powered backend and [NextJS](https://nextjs.org/)-powered frontend.
-
-_Note: The code refers to the project as `mhd` (as opposed to the expected `mdh`). This is due to historical reasons._
 
 This README contains backend information, the frontend can be found in the `frontend/` sub-folder.
 See [frontend/README.md](frontend/README.md) for more details.
