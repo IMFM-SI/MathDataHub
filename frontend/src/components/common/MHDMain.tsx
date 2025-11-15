@@ -1,10 +1,10 @@
 import React from "react"
 import { Row, Col, Container } from "reactstrap"
-import styles from "./MHDMain.module.css"
+import styles from "./MDHMain.module.css"
 import Head from "next/head"
 import { appTitle, isProduction } from "../../controller"
 
-type MHDMainProps = {
+type MDHMainProps = {
     /** title of the current page */
     title: React.ReactNode
 
@@ -36,23 +36,23 @@ type MHDMainProps = {
 /**
  * The main layouting component
  */
-export default class MHDMain extends React.Component<MHDMainProps> {
+export default class MDHMain extends React.Component<MDHMainProps> {
     render() {
         const { title, textTitle, titleRow, head, wide, leftHead, buttons, rightHead, children } = this.props
         
         return (
             <main>
-                <MHDMainHead title={title} textTitle={textTitle} titleRow={titleRow} head={head} wide={wide} leftHead={leftHead} buttons={buttons} rightHead={rightHead} />
+                <MDHMainHead title={title} textTitle={textTitle} titleRow={titleRow} head={head} wide={wide} leftHead={leftHead} buttons={buttons} rightHead={rightHead} />
                 { children }
             </main>
         )
     }
 }
 
-type MHDMainHeadProps = Pick<MHDMainProps, "title" | "textTitle" | "titleRow" | "head" | "leftHead" | "buttons" | "rightHead" | "wide">
+type MDHMainHeadProps = Pick<MDHMainProps, "title" | "textTitle" | "titleRow" | "head" | "leftHead" | "buttons" | "rightHead" | "wide">
 
 /** Layouting head */
-export class MHDMainHead extends React.Component<MHDMainHeadProps> {
+export class MDHMainHead extends React.Component<MDHMainHeadProps> {
     componentDidMount() {
         this.checkReceivedTitle()
     }
@@ -64,7 +64,7 @@ export class MHDMainHead extends React.Component<MHDMainHeadProps> {
 
         const { textTitle, title } = this.props
         if (typeof title !== "string" && !textTitle) {
-            console.warn("MHDMainHead: Received non-string title, but no textTitle", title, textTitle)
+            console.warn("MDHMainHead: Received non-string title, but no textTitle", title, textTitle)
         }
     }
     render() {

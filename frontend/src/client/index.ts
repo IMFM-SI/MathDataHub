@@ -2,35 +2,35 @@ import CodecManager from "../codecs"
 import type Codec from "../codecs/codec"
 import type { TableColumn } from "../components/query/results/table"
 import ExporterManager from "../exporters/manager"
-import type { MHDFilter, ParsedMHDCollection } from "./derived"
-import type { TDRFPagedResponse, TMHDCollection, TMHDItem, TMHDPreFilter, TMHDProperty } from "./rest"
+import type { MDHFilter, ParsedMDHCollection } from "./derived"
+import type { TDRFPagedResponse, TMDHCollection, TMDHItem, TMDHPreFilter, TMDHProperty } from "./rest"
 
 /** TCollectionPredicate is a predicate on a collection */
 export type TCollectionPredicate = {
     /** the set of applied filters */
-    filters: MHDFilter[];
+    filters: MDHFilter[];
 
     /** selected pre-filter */
-    pre_filter?: TMHDPreFilter;
+    pre_filter?: TMDHPreFilter;
 }
 
-type CollectionLike = Pick<ParsedMHDCollection, "slug">
+type CollectionLike = Pick<ParsedMDHCollection, "slug">
 
-export class MHDBackendClient {
+export class MDHBackendClient {
     /**
      * @param base_url the Base URL for all API requests
      * @param codec_manager interface to all known codecs
      */
     constructor(public base_url: string, public codec_manager: CodecManager, public exporter_manager: ExporterManager) { }
 
-    private static instance: MHDBackendClient
-    static getInstance(): MHDBackendClient {
-        if (MHDBackendClient.instance) {
-            return MHDBackendClient.instance
+    private static instance: MDHBackendClient
+    static getInstance(): MDHBackendClient {
+        if (MDHBackendClient.instance) {
+            return MDHBackendClient.instance
         }
         const base_url = (typeof window === "undefined") ? process.env.DJANGO_URL + "/api" : "/api"
-        MHDBackendClient.instance = new MHDBackendClient(base_url, CodecManager.getInstance(), ExporterManager.getInstance())
-        return MHDBackendClient.instance
+        MDHBackendClient.instance = new MDHBackendClient(base_url, CodecManager.getInstance(), ExporterManager.getInstance())
+        return MDHBackendClient.instance
     }
 
     /**
@@ -60,20 +60,20 @@ export class MHDBackendClient {
     }
 
     /** Fetches information about a collection with the given name or rejects */
-    async fetchCollection(name: string): Promise<TMHDCollection> {
-        return this.fetchJSON<TMHDCollection>(`/schema/collections/${name}/`)
+    async fetchCollection(name: string): Promise<TMDHCollection> {
+        return this.fetchJSON<TMDHCollection>(`/schema/collections/${name}/`)
     }
 
     /** Fetches information about a collection and an item within the collection */
-    async fetchCollectionAndItem(name: string, id: string): Promise<[TMHDCollection, TMHDItem<{}>]> {
+    async fetchCollectionAndItem(name: string, id: string): Promise<[TMDHCollection, TMDHItem<{}>]> {
         return Promise.all([
             this.fetchCollection(name),
-            this.fetchJSON<TMHDItem<{}>>(`/item/${name}/${id}/`),
+            this.fetchJSON<TMDHItem<{}>>(`/item/${name}/${id}/`),
         ])
     }
 
     /** Fetches a list of all collections */
-    async fetchCollections(page = 1, per_page = 20): Promise<TDRFPagedResponse<TMHDCollection>> {
+    async fetchCollections(page = 1, per_page = 20): Promise<TDRFPagedResponse<TMDHCollection>> {
         return this.fetchJSON("/schema/collections/", {
             page: page.toString(),
             per_page: per_page.toString(),
@@ -81,12 +81,12 @@ export class MHDBackendClient {
     }
 
     /** parses a collection and prepares appropriate derived values */
-    parseCollection(collection: TMHDCollection): ParsedMHDCollection {
+    parseCollection(collection: TMDHCollection): ParsedMDHCollection {
 
-        const propMap = new Map<string, TMHDProperty>()
+        const propMap = new Map<string, TMDHProperty>()
         const nameMap = new Map<string, string>()
         const codecMap = new Map<string, Codec>()
-        const columnMap = new Map<string, TableColumn<TMHDItem<any>>>()
+        const columnMap = new Map<string, TableColumn<TMDHItem<any>>>()
 
         const propertySlugs = collection.properties.map(p => {
             const { slug, codec } = p
@@ -111,18 +111,18 @@ export class MHDBackendClient {
     }
 
     /** Fetches information about a set of collection items */
-    async fetchItems<T extends {}>(collection: ParsedMHDCollection, properties: string[], query: TCollectionPredicate, order: string, page_number = 1, per_page = 100): Promise<TDRFPagedResponse<TMHDItem<T>>> {
+    async fetchItems<T extends {}>(collection: ParsedMDHCollection, properties: string[], query: TCollectionPredicate, order: string, page_number = 1, per_page = 100): Promise<TDRFPagedResponse<TMDHItem<T>>> {
         // Build the filter params
         const params = {
             properties: properties.join(","),
             page: page_number.toString(),
             per_page: per_page.toString(),
-            order: MHDBackendClient.buildSortOrder(collection, properties, order),
-            ...MHDBackendClient.buildParameters(query),
+            order: MDHBackendClient.buildSortOrder(collection, properties, order),
+            ...MDHBackendClient.buildParameters(query),
         }
 
         // fetch the results
-        return this.fetchJSON<TDRFPagedResponse<TMHDItem<T>>>(`/query/${collection.slug}/`, params)
+        return this.fetchJSON<TDRFPagedResponse<TMDHItem<T>>>(`/query/${collection.slug}/`, params)
     }
 
     /** hashes the parameters to the fetchItems function */
@@ -142,7 +142,7 @@ export class MHDBackendClient {
     /** Fetches the number of items in a collection */
     async fetchItemCount({ slug }: CollectionLike, query: TCollectionPredicate): Promise<number> {
         // build the parameters
-        const params = MHDBackendClient.buildParameters(query)
+        const params = MDHBackendClient.buildParameters(query)
 
         // fetch the results
         const res = await this.fetchJSON<TDRFPagedResponse<{count: number}>>(`/query/${slug}/count/`, params)
@@ -167,7 +167,7 @@ export class MHDBackendClient {
     }
 
     /** builds a sort order string to pass to the backend */
-    private static buildSortOrder(collection: ParsedMHDCollection, properties: string[], order: string): string {
+    private static buildSortOrder(collection: ParsedMDHCollection, properties: string[], order: string): string {
         const sorder = order.split(",") // array containing the final order
         
         // add properties which have not been ordered
@@ -177,9 +177,9 @@ export class MHDBackendClient {
         
         // find all the properties that we want to filter by in the appropriate order
         return sorder
-            .filter(n => properties.includes(MHDBackendClient.parseSortPart(n).id)) // filter by queries properties
-            .filter(n => collection.propMap.has(MHDBackendClient.parseSortPart(n).id)) // filter by known properties
-            .filter(n => collection.codecMap.get(MHDBackendClient.parseSortPart(n).id)!.ordered) // filter by orderable properties
+            .filter(n => properties.includes(MDHBackendClient.parseSortPart(n).id)) // filter by queries properties
+            .filter(n => collection.propMap.has(MDHBackendClient.parseSortPart(n).id)) // filter by known properties
+            .filter(n => collection.codecMap.get(MDHBackendClient.parseSortPart(n).id)!.ordered) // filter by orderable properties
             .map(n => {
                 if(n.startsWith("+") || n.startsWith("-")) return n
                 const order = collection.codecMap.get(n)!.ordered

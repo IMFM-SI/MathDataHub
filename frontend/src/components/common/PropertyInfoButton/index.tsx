@@ -1,12 +1,12 @@
 import React from "react"
 
-import type { TMHDProperty } from "../../../client/rest"
+import type { TMDHProperty } from "../../../client/rest"
 import { Enabled } from "../../../stex"
 import type { InfoButtonFlags } from "./InfoButton"
 import RegularInfo from "./RegularInfo"
 import STeXInfo from "./STeXInfo"
 
-export default class PropertyHover extends React.Component<{prop: TMHDProperty} & InfoButtonFlags> {
+export default class PropertyHover extends React.Component<{prop: TMDHProperty} & InfoButtonFlags> {
     render() {
         const { prop, ...rest } = this.props
         if(Enabled) {

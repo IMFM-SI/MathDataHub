@@ -1,17 +1,17 @@
 import React from "react"
 import { Container } from "reactstrap"
-import MHDMain from "../components/common/MHDMain"
+import MDHMain from "../components/common/MDHMain"
 import { aboutPageFilename } from "../controller"
 import { readFile } from "fs"
 import { join } from "path"
 import renderHTMLAsReact from "../templates/html"
 
-export default function MHDAboutPage({ html } : { html: string }) {
-    return <MHDMain title="About">
+export default function MDHAboutPage({ html } : { html: string }) {
+    return <MDHMain title="About">
         <Container>
             {renderHTMLAsReact(html)}
         </Container>
-    </MHDMain>
+    </MDHMain>
 }
 
 export async function getStaticProps() {

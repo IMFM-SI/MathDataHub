@@ -2,8 +2,8 @@ import React from "react"
 import LaTeX from "react-latex"
 import { Alert, Button, ButtonGroup, Row } from "reactstrap"
 import type { TCollectionPredicate } from "../../../client"
-import type { MHDFilter, ParsedMHDCollection } from "../../../client/derived"
-import type { TMHDCollection, TMHDPreFilter } from "../../../client/rest"
+import type { MDHFilter, ParsedMDHCollection } from "../../../client/derived"
+import type { TMDHCollection, TMDHPreFilter } from "../../../client/rest"
 import NavTabs from "../../wrappers/navtabs"
 import CounterDisplay from "../results/CounterDisplay"
 import ColumnEditor from "./ColumnEditor"
@@ -13,7 +13,7 @@ import OrderEditor from "./OrderEditor"
 
 type QueryEditorProps = {
     /** the current collection (if any) */
-    collection: ParsedMHDCollection;
+    collection: ParsedMDHCollection;
 
     /* the applied query */
     query: TCollectionPredicate,
@@ -71,7 +71,7 @@ export default class QueryEditor extends React.Component<QueryEditorProps, Query
     // SET SUB-STATE
     //
 
-    private readonly setFilters = (filters: MHDFilter[]) => {
+    private readonly setFilters = (filters: MDHFilter[]) => {
         const { query: { pre_filter } } = this.state
         this.setState({ query: { filters, pre_filter }, filtersDirty: true, applied: false })
     }
@@ -187,7 +187,7 @@ export default class QueryEditor extends React.Component<QueryEditorProps, Query
 }
 
 
-function PreFilterCountDisplay({ filter: { description, count }, collection }: { filter: TMHDPreFilter, collection: TMHDCollection }) {
+function PreFilterCountDisplay({ filter: { description, count }, collection }: { filter: TMDHPreFilter, collection: TMDHCollection }) {
     return <Alert color="info">
         <b>Pre-Filter active: </b>
         <LaTeX>{description}</LaTeX> {

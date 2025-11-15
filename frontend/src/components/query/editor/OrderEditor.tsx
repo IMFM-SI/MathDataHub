@@ -1,13 +1,13 @@
 import { Component } from "react"
 import { Col, FormGroup, Label } from "reactstrap"
-import type { ParsedMHDCollection } from "../../../client/derived"
+import type { ParsedMDHCollection } from "../../../client/derived"
 import Sortable from "../sort/sortable"
 
 import styles from "./index.module.css" // Import css modules stylesheet as styles
 
 type OrderEditorProps = {
     /** the current collection */
-    collection: ParsedMHDCollection;
+    collection: ParsedMDHCollection;
 
     /** the currently selected order */
     order: string;

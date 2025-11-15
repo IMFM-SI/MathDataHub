@@ -3,29 +3,29 @@ import Link from "next/link"
 import React from "react"
 import LaTeX from "react-latex"
 import { Alert, Col, Container, Row, Table } from "reactstrap"
-import { MHDBackendClient } from "../../../client"
-import type { TMHDCollection, TMHDItem } from "../../../client/rest"
-import MHDMain from "../../../components/common/MHDMain"
+import { MDHBackendClient } from "../../../client"
+import type { TMDHCollection, TMDHItem } from "../../../client/rest"
+import MDHMain from "../../../components/common/MDHMain"
 import PropertyHover from "../../../components/common/PropertyInfoButton"
 import TemplateManager from "../../../templates"
 import renderHTMLAsReact from "../../../templates/html"
 import { isProduction, Item } from "../../../controller"
 import { CellRenderContext, RenderCodec } from "../../../codecs/codec"
-import type { ParsedMHDCollection } from "../../../client/derived"
+import type { ParsedMDHCollection } from "../../../client/derived"
 
 type TemplateContext<T> = {
-    collection: ParsedMHDCollection;
-    item: TMHDItem<T>;
+    collection: ParsedMDHCollection;
+    item: TMDHItem<T>;
 }
-type MHDItemViewProps<T> = {
-    collection: TMHDCollection;
-    item: TMHDItem<T>;
+type MDHItemViewProps<T> = {
+    collection: TMDHCollection;
+    item: TMDHItem<T>;
     html?: string;
     isDefault?: boolean;
 }
 
 /** Renders a collection that is not found */
-export default function ItemPage<T>({ collection, item, html, isDefault }: MHDItemViewProps<T>) {
+export default function ItemPage<T>({ collection, item, html, isDefault }: MDHItemViewProps<T>) {
     const renderHTML = isDefault ? null : html
 
     return typeof renderHTML === "string" ?
@@ -33,7 +33,7 @@ export default function ItemPage<T>({ collection, item, html, isDefault }: MHDIt
         <DefaultItemPage collection={collection} item={item} />
 }
 
-function DevelopmentInfo<T>({ isDefault, collection, item, html }: MHDItemViewProps<T>) {
+function DevelopmentInfo<T>({ isDefault, collection, item, html }: MDHItemViewProps<T>) {
     if(isProduction) return null // hide in production!
 
     const target = Item(collection.slug, item._id)
@@ -59,9 +59,9 @@ function DevelopmentInfo<T>({ isDefault, collection, item, html }: MHDItemViewPr
     </Alert>
 }
 
-function CustomItemPage<T>({ html, collection, item, isDefault }: MHDItemViewProps<T> & { html: string }) {
+function CustomItemPage<T>({ html, collection, item, isDefault }: MDHItemViewProps<T> & { html: string }) {
     const record = new Map<string, string[]>()
-    const pCollection = MHDBackendClient.getInstance().parseCollection(collection)
+    const pCollection = MDHBackendClient.getInstance().parseCollection(collection)
     const children = manager.render(html, { collection: pCollection, item }, record)
 
     const [titlestring] = record.get("pagetitle") ?? [null]
@@ -69,7 +69,7 @@ function CustomItemPage<T>({ html, collection, item, isDefault }: MHDItemViewPro
     
     const [textTitle] = record.get("texttitle") ?? [undefined]
 
-    return <MHDMain title={pagetitle} textTitle={textTitle} wide={true} leftHead={<DevelopmentInfo collection={collection} item={item} html={html} isDefault={isDefault} />}>
+    return <MDHMain title={pagetitle} textTitle={textTitle} wide={true} leftHead={<DevelopmentInfo collection={collection} item={item} html={html} isDefault={isDefault} />}>
         <Container>
             <Row>
                 <Col sm="12">
@@ -77,11 +77,11 @@ function CustomItemPage<T>({ html, collection, item, isDefault }: MHDItemViewPro
                 </Col>
             </Row>
         </Container>
-    </MHDMain>
+    </MDHMain>
 }
 
-function DefaultItemPage<T>({ collection, item, html, isDefault }: MHDItemViewProps<T>) {
-    const pCollection = MHDBackendClient.getInstance().parseCollection(collection)
+function DefaultItemPage<T>({ collection, item, html, isDefault }: MDHItemViewProps<T>) {
+    const pCollection = MDHBackendClient.getInstance().parseCollection(collection)
     // render rows for the main table
     const rows = collection.properties.map(p => {
         return <tr key={p.slug}>
@@ -90,7 +90,7 @@ function DefaultItemPage<T>({ collection, item, html, isDefault }: MHDItemViewPr
         </tr>
     })
 
-    return <MHDMain title={`Item ${item._id}`} wide={true} leftHead={<DevelopmentInfo collection={collection} item={item} html={html} isDefault={isDefault} />}>
+    return <MDHMain title={`Item ${item._id}`} wide={true} leftHead={<DevelopmentInfo collection={collection} item={item} html={html} isDefault={isDefault} />}>
         <Container>
             <Row>
                 <Col sm="12">
@@ -108,7 +108,7 @@ function DefaultItemPage<T>({ collection, item, html, isDefault }: MHDItemViewPr
                 </Col>
             </Row>
         </Container>
-    </MHDMain>
+    </MDHMain>
 }
 
 /** Present presents a property on the page using the appropriate component */
@@ -120,7 +120,7 @@ function Present<T>({ property, collection, item }: TemplateContext<T> & { prope
 }
 
 /** Info renders information about a specific property */
-function Info({ property, collection }: { collection: ParsedMHDCollection, property: string }) {
+function Info({ property, collection }: { collection: ParsedMDHCollection, property: string }) {
     const prop = collection.propMap.get(property)
     if (!prop) return <Alert color="warning">Unknown property <code style={{ fontSize: ".75rem" }}>{property}</code> on collection <code style={{ fontSize: ".75rem" }}>{collection.slug}</code>.</Alert>
 
@@ -152,7 +152,7 @@ manager.registerRecordingFilter("texttitle")
 
 
 export const getServerSideProps: GetServerSideProps = async function ({ params: { slug, uuid }, query: { default: dflt } }) {
-    const client = MHDBackendClient.getInstance()
+    const client = MDHBackendClient.getInstance()
 
     const [collection, item] = await client.fetchCollectionAndItem(slug as string, uuid as string)
     const pCollection = client.parseCollection(collection)

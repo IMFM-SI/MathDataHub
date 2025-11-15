@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: imfm-si/mhd
+  IMAGE_NAME: imfm-si/mdh
   PLATFORMS: linux/amd64
 
 jobs:

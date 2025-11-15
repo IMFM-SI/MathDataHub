@@ -2,7 +2,7 @@ import type { AppProps } from "next/app"
 import Head from "next/head"
 
 // load custom styles
-import "../css/bootstrapMHD.scss"
+import "../css/bootstrapMDH.scss"
 import "katex/dist/katex.min.css"
 
 // load font-awesome
@@ -24,7 +24,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { AboutExternal, AboutInternal, appBranding, appTitle, Debug, DjangoAdmin, Index, isProduction, singleCollection } from "../controller"
 
 
-export default function MHDApp({ Component, pageProps }: AppProps<{}>) {
+export default function MDHApp({ Component, pageProps }: AppProps<{}>) {
     return <>
         <Head>
             <meta charSet="utf-8" />
@@ -44,7 +44,7 @@ export default function MHDApp({ Component, pageProps }: AppProps<{}>) {
             <meta name="theme-color" content="#ffffff" />
         </Head>
 
-        <header><MHDHeader /></header>
+        <header><MDHHeader /></header>
         <Component {...pageProps} />
         {!isProduction && <DevFooter />}
     </>
@@ -55,17 +55,17 @@ export default function MHDApp({ Component, pageProps }: AppProps<{}>) {
 //
 
 
-type MHDHeaderState = {
+type MDHHeaderState = {
     isOpen: boolean;
 }
 
-class MHDHeader extends React.Component<{}, MHDHeaderState> {
-    state: MHDHeaderState = {
+class MDHHeader extends React.Component<{}, MDHHeaderState> {
+    state: MDHHeaderState = {
         isOpen: false,
     }
 
     private toggle = () => {
-        this.setState(({ isOpen }: MHDHeaderState) => ({ isOpen: !isOpen }))
+        this.setState(({ isOpen }: MDHHeaderState) => ({ isOpen: !isOpen }))
     }
 
     render() {
@@ -95,7 +95,7 @@ class MHDHeader extends React.Component<{}, MHDHeaderState> {
                             }
                         </NavItem>
                         <NavItem>
-                            <NavLink href="https://github.com/MathHubInfo/mhd" className={"item-link"} target="_blank" rel="noopener noreferrer">
+                            <NavLink href="https://github.com/IMFM-SI/MathDataHub" className={"item-link"} target="_blank" rel="noopener noreferrer">
                                 <FontAwesomeIcon icon={faGithub} /> GitHub
                             </NavLink>
                         </NavItem>

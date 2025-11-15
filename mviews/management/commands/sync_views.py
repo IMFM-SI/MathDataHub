@@ -26,7 +26,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args: Any, **kwargs: Any) -> Any:
-        logger = logging.getLogger("mhd.sync")
+        logger = logging.getLogger("mdh.sync")
 
         with connection.cursor() as cursor:
             View.sync_all(

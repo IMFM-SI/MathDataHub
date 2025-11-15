@@ -1,17 +1,17 @@
 import * as React from "react"
 import type { TCollectionPredicate } from "../../../client"
-import type { TMHDCollection, TMHDProperty } from "../../../client/rest"
+import type { TMDHCollection, TMDHProperty } from "../../../client/rest"
 import CodecManager from "../../../codecs"
 import ExportButton from "../../../exporters/button"
 import PropertyHover from "../../common/PropertyInfoButton"
 
 type PropertyHeaderContextual = {
-    collection: TMHDCollection;
+    collection: TMDHCollection;
     query: TCollectionPredicate;
     order: string;
 }
 type PropertyHeaderProps = {
-    property: TMHDProperty;
+    property: TMDHProperty;
 }
 
 export const PropertyHeaderContext = React.createContext<PropertyHeaderContextual>(undefined!)

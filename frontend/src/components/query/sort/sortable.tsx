@@ -2,8 +2,8 @@ import * as React from "react"
 import type { TagComponentProps } from "react-tag-autocomplete"
 import { default as ReactTags } from "react-tag-autocomplete"
 import { Button } from "reactstrap"
-import { MHDBackendClient } from "../../../client"
-import type { ParsedMHDCollection } from "../../../client/derived"
+import { MDHBackendClient } from "../../../client"
+import type { ParsedMDHCollection } from "../../../client/derived"
 import styles from "./sortable.module.css"
 
 const CLASS_NAMES = {
@@ -29,8 +29,8 @@ type Tag = {
     name: string;
 }
 
-function makeTagFromID(id: string, { propMap, codecMap }: ParsedMHDCollection): Tag | undefined {
-    const { mod: tMod, id: tID } = MHDBackendClient.parseSortPart(id)
+function makeTagFromID(id: string, { propMap, codecMap }: ParsedMDHCollection): Tag | undefined {
+    const { mod: tMod, id: tID } = MDHBackendClient.parseSortPart(id)
 
     const prop = propMap.get(tID)
     const codec = codecMap.get(tID)
@@ -49,7 +49,7 @@ function makeTagFromID(id: string, { propMap, codecMap }: ParsedMHDCollection): 
 
 type SortableProps = {
     id?: string;
-    collection: ParsedMHDCollection,
+    collection: ParsedMDHCollection,
 
     value: string,
     onChange: (order: string) => void,
@@ -112,8 +112,8 @@ export default class Sortable extends React.Component<SortableProps, SortableSta
         )
     }
     private readonly suggestionsFilter = (tag: Tag, query: string) => {
-        const { mod: tMod, id: tID } = MHDBackendClient.parseSortPart(tag.id)
-        const { mod: qMod, id: qID } = MHDBackendClient.parseSortPart(query)
+        const { mod: tMod, id: tID } = MDHBackendClient.parseSortPart(tag.id)
+        const { mod: qMod, id: qID } = MDHBackendClient.parseSortPart(query)
         
         return (
             tag.name.startsWith(qID) || tID.startsWith(qID)

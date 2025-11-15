@@ -1,7 +1,7 @@
 /** @file contains types directly returned from the REST API */
 
 /** a MathDataHub Collection */
-export type TMHDCollection = {
+export type TMDHCollection = {
     slug: string;
     hidden: boolean;
     displayName: string;
@@ -15,21 +15,21 @@ export type TMHDCollection = {
 
     count: number | null;
 
-    preFilters: TMHDPreFilter[]
+    preFilters: TMDHPreFilter[]
 
     metadata?: any;
     
-    properties: TMHDProperty[];
+    properties: TMDHProperty[];
 }
 
-export type TMHDPreFilter = {
+export type TMDHPreFilter = {
     description: string,
     condition: string,
     count: number | null,
 }
 
 /** a MathDataHub Property */
-export type TMHDProperty = {
+export type TMDHProperty = {
     slug: string;
     displayName: string;
 
@@ -44,7 +44,7 @@ export type TMHDProperty = {
 }
 
 /** an item in a collection */
-export type TMHDItem<P extends {}> = P & {"_id": string}
+export type TMDHItem<P extends {}> = P & {"_id": string}
 
 /** a paged Django Rest Framework Response */
 export type TDRFPagedResponse<T> = {

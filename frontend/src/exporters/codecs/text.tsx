@@ -1,5 +1,5 @@
-import type { ParsedMHDCollection } from "../../client/derived"
-import type { TMHDProperty } from "../../client/rest"
+import type { ParsedMDHCollection } from "../../client/derived"
+import type { TMDHProperty } from "../../client/rest"
 import CodecExporter from "."
 
 /* TextExporter exports string-based codecs as newline-delimited text */
@@ -8,7 +8,7 @@ export class TextExporter extends CodecExporter<string>{
     readonly displayName = "Plain Text"
     readonly defaultExtension = "txt"
 
-    protected async open(collection: ParsedMHDCollection, property: TMHDProperty): Promise<Array<string> | null> {
+    protected async open(collection: ParsedMDHCollection, property: TMDHProperty): Promise<Array<string> | null> {
         return []
     }
 

@@ -9,4 +9,4 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
-    - run: docker build -t mathhub/mhd .
+    - run: docker build -t imfm-si/mdh .
