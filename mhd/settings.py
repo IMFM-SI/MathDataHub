@@ -16,13 +16,6 @@ import os
 # (which will work with pypy)
 from typing import List
 
-try:
-    from psycopg2cffi import compat
-
-    compat.register()
-except ImportError:
-    pass
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

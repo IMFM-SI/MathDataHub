@@ -55,17 +55,29 @@ There are six apps:
 
 Currently, MHD depends only on Django and [Django Rest Framework](https://www.django-rest-framework.org/).
 To install the dependencies, first make sure you have a recent enough version of Python installed on your system.
-You can then install the requirements inside a new [venv](https://docs.python.org/3/library/venv.html):
+The project uses Astral's `uv` to manage dependencies and Python
+environments, so make sure you have that installed by following the
+instructions in [its manual](https://docs.astral.sh/uv/getting-started/installation/).
+Once that is set up and functioning, you can set up your local
+environment like so:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+uv sync
 ```
+
+A virtual environment will be created in `.venv/`, which you can
+activate in the usual way:
+
+```bash
+. .venv/bin/activate
+```
+
+All commands below will then work as normal.
 
 ## Development
 
-** To run this, you need Python 3.11+. We recommend using Python 3.11. **
+** To run this, you need Python 3.13+. We recommend using the latest
+available version of Python. **
 
 By default, MathDataHub uses an `sqlite` database.
 To get started, you can run the initial migrations:
@@ -219,15 +231,27 @@ In addition round brackets can be used for grouping.
 For the backend, tests for every important feature exist, and are run by GitHub Actions on every commit.
 Note that tests are run both on `sqlite` and `postgres`.
 
-To be able to run the tests, you first need to install the development dependencies:
+The development dependencies needed to run the tests should have already
+been installed by `uv`; in case you synced your environment with
+`--no-dev` or similar when settig it up, you need to add them by using
+the `dev` dependency group. If you're unsure or just need a shorthand,
+use:
 
 ```
-pip install -r requirements-dev.txt
+uv sync
 ```
 
 Then you can run the tests with:
 
 ```bash
+uv run pytest
+```
+
+or more traditionally by activating the virtual environment manually
+with:
+
+```bash
+. .venv/bin/activate
 pytest
 ```
 

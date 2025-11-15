@@ -1,0 +1,23 @@
+[project]
+name = "mathdatahub"
+version = "0.1.0"
+description = "The implementation of MathDataHub powered by Django + React."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django~=5.2.0",
+    "django-cors-headers~=4.9",
+    "djangorestframework~=3.16",
+    "pre-js-py>=1.2.0",
+    "psycopg[binary,pool]>=3.2.13",
+    "tqdm>=4.67.1",
+    "ujson~=5.11",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=5.2.7",
+    "mypy>=1.18.2",
+    "pytest>=9.0.1",
+    "pytest-django>=4.11.1",
+]
