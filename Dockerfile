@@ -1,17 +1,20 @@
 # Add all the dependencies
-FROM python:3.11-alpine as base
+FROM python:3.13-alpine as base
 
 # Add requirements and install dependencies
 WORKDIR /app/
-ADD requirements.txt /app/
-ADD requirements-prod.txt /app/
+ADD pyproject.toml /app/
+ADD uv.lock /app/
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Add dependencies
 RUN mkdir -p /var/www/api/admin/static/ \
     && apk add --no-cache bash postgresql-libs postgresql-client pcre-dev libffi-dev mailcap supervisor yarn \
     && apk add --no-cache --virtual .build-deps gcc g++ musl-dev postgresql-dev linux-headers python3-dev \
-    && pip install -r requirements.txt -r requirements-prod.txt --no-cache-dir \
+    && UV_PROJECT_ENVIRONMENT="/usr/local" uv sync --locked \
     && apk --purge del .build-deps
+
+ENV PATH="/app/.venv/bin:$PATH"
 
 FROM base as frontend
 

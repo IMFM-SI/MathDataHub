@@ -5,8 +5,9 @@ frontend/.env.local
 
 docker/deploy/.env
 
-venv/
+.venv/
 *.pyc
+*.swp
 
 db.sqlite3
 .pytest_cache
