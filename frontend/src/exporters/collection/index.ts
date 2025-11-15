@@ -1,6 +1,6 @@
 import type { TCollectionPredicate } from "../../client"
-import type { ParsedMHDCollection } from "../../client/derived"
-import type { TMHDItem } from "../../client/rest"
+import type { ParsedMDHCollection } from "../../client/derived"
+import type { TMDHItem } from "../../client/rest"
 import { ClientSideExporter } from "../index"
 
 /** A CollectionExporter represents an exporter for an entire collection */
@@ -12,10 +12,10 @@ export default abstract class CollectionExporter<Accumulator> extends ClientSide
     }
 
     /** init initializes this exporter to create a new page */
-    protected abstract open(collection: ParsedMHDCollection): Promise<Accumulator | null>
+    protected abstract open(collection: ParsedMDHCollection): Promise<Accumulator | null>
 
     /** add adds the specified number of items from this page */
-    protected abstract add(acc: Accumulator, items: TMHDItem<unknown>[], page_number: number): Promise<Accumulator | null>
+    protected abstract add(acc: Accumulator, items: TMDHItem<unknown>[], page_number: number): Promise<Accumulator | null>
 
     /** close generates a blob and releases all resources */
     protected abstract close(acc: Accumulator, aborted: boolean): Promise<Blob | null>
@@ -25,15 +25,15 @@ export default abstract class CollectionExporter<Accumulator> extends ClientSide
     // super Implementation
     // ====================
 
-    protected initAcc(flags: null, collection: ParsedMHDCollection): Promise<Accumulator | null> {
+    protected initAcc(flags: null, collection: ParsedMDHCollection): Promise<Accumulator | null> {
         return this.open(collection)
     }
 
-    protected getPage(items: Array<TMHDItem<unknown>>, flags: null): Array<TMHDItem<unknown>> {
+    protected getPage(items: Array<TMDHItem<unknown>>, flags: null): Array<TMDHItem<unknown>> {
         return items
     }
 
-    protected updateAcc(page: Array<TMHDItem<unknown>>, index: number, acc: Accumulator, flags: null, collection: ParsedMHDCollection) {
+    protected updateAcc(page: Array<TMDHItem<unknown>>, index: number, acc: Accumulator, flags: null, collection: ParsedMDHCollection) {
         return this.add(acc, page, index)
     }
 

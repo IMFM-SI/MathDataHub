@@ -2,16 +2,16 @@ import type { GetServerSideProps } from "next"
 import React from "react"
 import LaTeX from "react-latex"
 import { Col, Container, Row } from "reactstrap"
-import { MHDBackendClient, ResponseError } from "../../../client"
-import type { TMHDCollection } from "../../../client/rest"
-import MHDMain from "../../../components/common/MHDMain"
+import { MDHBackendClient, ResponseError } from "../../../client"
+import type { TMDHCollection } from "../../../client/rest"
+import MDHMain from "../../../components/common/MDHMain"
 
 type AboutPageProps = {
-    collection: TMHDCollection,
+    collection: TMDHCollection,
 }
 
 export default function ProvenancePAGE({ collection: { displayName, description, metadata } }: AboutPageProps) {
-    return <MHDMain title={<LaTeX>{displayName}</LaTeX>} textTitle={displayName}>
+    return <MDHMain title={<LaTeX>{displayName}</LaTeX>} textTitle={displayName}>
         <Container>
             <Row>
                 <Col sm="12">
@@ -33,13 +33,13 @@ export default function ProvenancePAGE({ collection: { displayName, description,
                 </Col>
             </Row>
         </Container>
-    </MHDMain>
+    </MDHMain>
 }
 
 export const getServerSideProps: GetServerSideProps = async function ({ params: { slug } }) {
-    let collection: TMHDCollection
+    let collection: TMDHCollection
     try {
-        collection = await MHDBackendClient.getInstance().fetchCollection(slug as string)
+        collection = await MDHBackendClient.getInstance().fetchCollection(slug as string)
     } catch(e) {
         if (!(e instanceof ResponseError) || !e.isNotFound) throw e
         return { notFound: true }

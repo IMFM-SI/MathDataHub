@@ -1,20 +1,20 @@
 import type Codec from "../codecs/codec"
 import type { TableColumn } from "../components/wrappers/table"
 import type { CollectionExporter } from "../exporters"
-import type { TMHDCollection, TMHDPreFilter, TMHDProperty } from "./rest"
+import type { TMDHCollection, TMDHPreFilter, TMDHProperty } from "./rest"
 
 /**
  * A parsed collection with all derived information needed by any component anywhere
  */
-export type ParsedMHDCollection = TMHDCollection & {
+export type ParsedMDHCollection = TMDHCollection & {
     /** a map from slug to slug-schema */
-    propMap: Map<string, TMHDProperty>
+    propMap: Map<string, TMDHProperty>
 
     /** a map from slug to names */
     nameMap: Map<string, string>
 
     /** the default pre-filter */
-    defaultPreFilter?: TMHDPreFilter,
+    defaultPreFilter?: TMDHPreFilter,
 
     /* the slugs of all the default properties */
     defaultPropertySlugs: string[],
@@ -33,7 +33,7 @@ export type ParsedMHDCollection = TMHDCollection & {
 }
 
 /** a single instantiated filter */
-export type MHDFilter = {
+export type MDHFilter = {
     slug: string;
     value: string | null;
 }

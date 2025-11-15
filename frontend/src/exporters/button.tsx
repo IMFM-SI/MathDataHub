@@ -2,13 +2,13 @@ import * as React from "react"
 import { Button } from "reactstrap"
 import type { ClientSideExporter } from "."
 import type { TCollectionPredicate } from "../client"
-import type { TMHDCollection } from "../client/rest"
+import type { TMDHCollection } from "../client/rest"
 
 type ExportButtonProps<Flags> = {
     exporter: ClientSideExporter<Flags, unknown, Blob, unknown>,
     flags: Flags, 
 
-    collection: TMHDCollection;
+    collection: TMDHCollection;
     query: TCollectionPredicate,
     order: string,
 }

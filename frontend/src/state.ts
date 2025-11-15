@@ -1,4 +1,4 @@
-import type { MHDFilter } from "./client/derived"
+import type { MDHFilter } from "./client/derived"
 import type { TCollectionPredicate } from "./client"
 import type { TableState } from "./components/query/results/table"
 
@@ -113,7 +113,7 @@ function isString(candidate: any): candidate is string {
     return typeof candidate === "string"
 }
 
-function isFilter(candidate: any): candidate is MHDFilter {
+function isFilter(candidate: any): candidate is MDHFilter {
     const { slug, value, uid, inital, initialEdit, ...extra } = candidate
 
     if(Object.keys(extra).length !== 0) return false

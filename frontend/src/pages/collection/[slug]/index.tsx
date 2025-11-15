@@ -4,42 +4,42 @@ import { withRouter } from "next/router"
 import React from "react"
 import { Container } from "reactstrap"
 import type { TCollectionPredicate } from "../../../client"
-import { MHDBackendClient, ResponseError } from "../../../client"
-import type { ParsedMHDCollection } from "../../../client/derived"
-import type { TMHDCollection } from "../../../client/rest"
+import { MDHBackendClient, ResponseError } from "../../../client"
+import type { ParsedMDHCollection } from "../../../client/derived"
+import type { TMDHCollection } from "../../../client/rest"
 import type { PageState } from "../../../state"
 import { decodeState, encodeState } from "../../../state"
 import { CollectionIndex } from "../../../controller"
 import CollectionTitle, { CollectionFlags } from "../../../components/query/head/title"
 import CollectionInfo from "../../../components/query/head/info"
-import { MHDMainHead } from "../../../components/common/MHDMain"
+import { MDHMainHead } from "../../../components/common/MDHMain"
 import ResultsTable from "../../../components/query/results"
 import QueryEditor from "../../../components/query/editor"
 import Exporters from "../../../components/query/results/Exporter"
 import type { TableState } from "../../../components/query/results/table"
 
-type MHDCollectionSearchProps = {
+type MDHCollectionSearchProps = {
     router: NextRouter;
 
     /** collection that was read */
-    collection: TMHDCollection;
+    collection: TMDHCollection;
 
     /** timeout under which to not show the loading indicator */
     results_loading_delay: number;
 }
 
-type MHDCollectionSearchState = PageState & {
-    collection: ParsedMHDCollection;
+type MDHCollectionSearchState = PageState & {
+    collection: ParsedMDHCollection;
 }
 
 /**
  * Display the search interface for a single collection
  */
-class MHDCollectionSearch extends React.Component<MHDCollectionSearchProps, MHDCollectionSearchState> {
+class MDHCollectionSearch extends React.Component<MDHCollectionSearchProps, MDHCollectionSearchState> {
 
-    state: MHDCollectionSearchState = ((): MHDCollectionSearchState => {
+    state: MDHCollectionSearchState = ((): MDHCollectionSearchState => {
         // find the collection
-        const collection = MHDBackendClient.getInstance().parseCollection(this.props.collection)
+        const collection = MDHBackendClient.getInstance().parseCollection(this.props.collection)
 
         // HACK: Decode the search state manually cause new URL() doesn't work
         let search = this.props.router.asPath
@@ -64,7 +64,7 @@ class MHDCollectionSearch extends React.Component<MHDCollectionSearchProps, MHDC
         return { ...state, collection }
     })()
 
-    private generateURLParams = ({ collection, ...state }: MHDCollectionSearchState): string => {
+    private generateURLParams = ({ collection, ...state }: MDHCollectionSearchState): string => {
         return encodeState(state)
     }
 
@@ -83,7 +83,7 @@ class MHDCollectionSearch extends React.Component<MHDCollectionSearchProps, MHDC
         this.setState({ page, per_page })
     }
 
-    componentDidUpdate(prevProps: MHDCollectionSearchProps, prevState: MHDCollectionSearchState) {
+    componentDidUpdate(prevProps: MDHCollectionSearchProps, prevState: MDHCollectionSearchState) {
         const oldParams = this.generateURLParams(prevState)
         const newParams = this.generateURLParams(this.state)
         if (oldParams !== newParams) {
@@ -100,7 +100,7 @@ class MHDCollectionSearch extends React.Component<MHDCollectionSearchProps, MHDC
 
         return (
             <main>
-                <MHDMainHead
+                <MDHMainHead
                     wide="fancy"
 
                     title={<CollectionTitle collection={collection} />}
@@ -151,13 +151,13 @@ class MHDCollectionSearch extends React.Component<MHDCollectionSearchProps, MHDC
 
 }
 
-export default withRouter(MHDCollectionSearch)
+export default withRouter(MDHCollectionSearch)
 
 
 export const getServerSideProps: GetServerSideProps = async function ({ params: { slug } }) {
-    let collection: TMHDCollection
+    let collection: TMDHCollection
     try {
-        collection = await MHDBackendClient.getInstance().fetchCollection(slug as string)
+        collection = await MDHBackendClient.getInstance().fetchCollection(slug as string)
     } catch (e) {
         if (!(e instanceof ResponseError) || !e.isNotFound) throw e
         return { notFound: true }

@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { TMHDProperty } from "../../../client/rest"
+import type { TMDHProperty } from "../../../client/rest"
 import type { InfoButtonFlags } from "./InfoButton"
 import InfoButton from "./InfoButton"
 
@@ -7,7 +7,7 @@ import styles from "./STeXInfo.module.css"
 import { displayLink, fetchFragment } from "../../../stex"
 
 
-export default class STeXInfo extends React.Component<InfoButtonFlags & { uri: string; prop: TMHDProperty }> {
+export default class STeXInfo extends React.Component<InfoButtonFlags & { uri: string; prop: TMDHProperty }> {
     render() {
         const { uri, prop: { description }, ...rest } = this.props
         return <InfoButton href={displayLink(uri)} className={styles.Tooltip} {...rest}>

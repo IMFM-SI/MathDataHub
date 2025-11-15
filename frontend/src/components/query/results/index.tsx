@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import type { TCollectionPredicate } from "../../../client"
-import { MHDBackendClient } from "../../../client"
-import type { ParsedMHDCollection } from "../../../client/derived"
-import type { TDRFPagedResponse, TMHDItem } from "../../../client/rest"
+import { MDHBackendClient } from "../../../client"
+import type { ParsedMDHCollection } from "../../../client/derived"
+import type { TDRFPagedResponse, TMDHItem } from "../../../client/rest"
 import { Row, Col, Spinner } from "reactstrap"
 import Link from "next/link"
 import type { TableColumn, TableState } from "./table"
@@ -15,7 +15,7 @@ import NavTabs from "../../wrappers/navtabs"
 
 type ResultsTableProps = TableState & {
     /** the current collection */
-    collection: ParsedMHDCollection;
+    collection: ParsedMDHCollection;
 
     /** query for the query */
     query: TCollectionPredicate;
@@ -38,10 +38,10 @@ type ResultsTableState = {
     loading: boolean;
 
     /** the columns being shown */
-    columns: TableColumn<TMHDItem<any>>[]
+    columns: TableColumn<TMDHItem<any>>[]
 
-    /** the stored MHD data */
-    data: TMHDItem<any>[];
+    /** the stored MDH data */
+    data: TMDHItem<any>[];
 
     /** the total number of pages, or -1 if unknown */
     total_pages: number;
@@ -99,9 +99,9 @@ export default class ResultsTable extends Component<ResultsTableProps, ResultsTa
         const { collection, columns, query, order, page, per_page } = this.props
 
         // fetch the results with appropriate errors
-        let results: TDRFPagedResponse<TMHDItem<{}>> = { count: 0, next: null, previous: null, num_pages: -1, results: [] }
+        let results: TDRFPagedResponse<TMDHItem<{}>> = { count: 0, next: null, previous: null, num_pages: -1, results: [] }
         try {
-            results = await MHDBackendClient.getInstance().fetchItems(collection, columns, query, order, page + 1, per_page)
+            results = await MDHBackendClient.getInstance().fetchItems(collection, columns, query, order, page + 1, per_page)
         } catch (e) {
             if (!isProduction) console.error(e)
         }
@@ -115,7 +115,7 @@ export default class ResultsTable extends Component<ResultsTableProps, ResultsTa
             // pick the appropriate columns
             const columns = this.props.columns.map(c => this.props.collection.columnMap.get(c)!)
             columns.unshift({
-                Cell: ({ data }: TMHDItem<any>) => <ItemLink collection={this.props.collection} uuid={data._id}/>,
+                Cell: ({ data }: TMDHItem<any>) => <ItemLink collection={this.props.collection} uuid={data._id}/>,
                 Header: () => "",
                 width: 50,
             } as unknown as TableColumn<unknown>)
@@ -132,11 +132,11 @@ export default class ResultsTable extends Component<ResultsTableProps, ResultsTa
 
     /** computes a hash of the properties that influence data fetching */
     private static computeDataUpdateHash({ query, collection, columns, order, page, per_page }: ResultsTableProps): string {
-        return MHDBackendClient.hashFetchItems(collection, columns, query, order, page, per_page)
+        return MDHBackendClient.hashFetchItems(collection, columns, query, order, page, per_page)
     }
 
     private static computeResetHash({ collection, query, order }: ResultsTableProps): string {
-        return MHDBackendClient.hashFetchItems(collection, [], query, order, 1, 1)
+        return MDHBackendClient.hashFetchItems(collection, [], query, order, 1, 1)
     }
     
     componentDidUpdate(prevProps: ResultsTableProps, prevState: ResultsTableState) {
@@ -203,7 +203,7 @@ export default class ResultsTable extends Component<ResultsTableProps, ResultsTa
     }
 }
 
-class ItemLink extends React.Component<{collection: ParsedMHDCollection, uuid: string}>{
+class ItemLink extends React.Component<{collection: ParsedMDHCollection, uuid: string}>{
     render() {
         const { collection, uuid } = this.props
         return (

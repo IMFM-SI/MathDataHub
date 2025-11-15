@@ -26,7 +26,7 @@ RUN yarn build --no-lint
 FROM base as final
 ARG DJANGO_SECRET_KEY=something-insecure
 ARG DJANGO_DB_ENGINE "django.db.backends.sqlite3"
-ARG DJANGO_DB_NAME "/data/mhd.db"
+ARG DJANGO_DB_NAME "/data/mdh.db"
 ARG DJANGO_DB_USER ""
 ARG DJANGO_DB_PASSWORD ""
 ARG DJANGO_DB_HOST ""
@@ -34,17 +34,17 @@ ARG DJANGO_DB_PORT ""
 
 # Install Django App, configure settings and copy over djano app
 ADD manage.py /app/
-ADD mhd/ /app/mhd/
-ADD mhd_data/ /app/mhd_data/
-ADD mhd_provenance/ /app/mhd_provenance/
-ADD mhd_schema/ /app/mhd_schema/
-ADD mhd_tests/ /app/mhd_tests/
+ADD mdh/ /app/mdh/
+ADD mdh_data/ /app/mdh_data/
+ADD mdh_provenance/ /app/mdh_provenance/
+ADD mdh_schema/ /app/mdh_schema/
+ADD mdh_tests/ /app/mdh_tests/
 ADD mddl_catalog/ /app/mddl_catalog/
 ADD mviews/ /app/mviews/
 
 ### ALL THE CONFIGURATION
 
-ENV DJANGO_SETTINGS_MODULE "mhd.docker_settings"
+ENV DJANGO_SETTINGS_MODULE "mdh.docker_settings"
 ENV DJANGO_SECRET_KEY $DJANGO_SECRET_KEY
 ENV DJANGO_DB_ENGINE $DJANGO_DB_ENGINE
 ENV DJANGO_DB_NAME $DJANGO_DB_NAME

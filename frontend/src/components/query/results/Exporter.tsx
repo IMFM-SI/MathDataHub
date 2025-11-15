@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import * as React from "react"
 import { Button, Card, CardText, Col, Collapse, Row } from "reactstrap"
 import type { TCollectionPredicate } from "../../../client"
-import type { ParsedMHDCollection } from "../../../client/derived"
+import type { ParsedMDHCollection } from "../../../client/derived"
 import type CollectionExporter from "../../../exporters/collection"
 import ExportButton from "../../../exporters/button"
 
 type ExportersProps = {
-    collection: ParsedMHDCollection,
+    collection: ParsedMDHCollection,
     query: TCollectionPredicate,
     order: string,
 }

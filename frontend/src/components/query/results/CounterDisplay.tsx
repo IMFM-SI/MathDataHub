@@ -1,13 +1,13 @@
 import React from "react"
 
 import type { TCollectionPredicate } from "../../../client"
-import { MHDBackendClient } from "../../../client"
-import type { ParsedMHDCollection } from "../../../client/derived"
+import { MDHBackendClient } from "../../../client"
+import type { ParsedMDHCollection } from "../../../client/derived"
 import { isProduction } from "../../../controller"
 
 type CounterDisplayProps = {
     /** the current collection (if any) */
-    collection: ParsedMHDCollection;
+    collection: ParsedMDHCollection;
 
     /** the query being run */
     query: TCollectionPredicate;
@@ -62,7 +62,7 @@ export default class CounterDisplay extends React.Component<CounterDisplayProps,
         // fallback to 'NaN' when an error occurs, and log the error during development
         let count = NaN
         try {
-            count = await MHDBackendClient.getInstance().fetchItemCount(this.props.collection, this.props.query)
+            count = await MDHBackendClient.getInstance().fetchItemCount(this.props.collection, this.props.query)
         } catch (e) {
             if (!isProduction) console.error(e)
         }
@@ -88,11 +88,11 @@ export default class CounterDisplay extends React.Component<CounterDisplayProps,
     componentDidUpdate(prevProps: CounterDisplayProps, prevState: CounterDisplayState) {
         // compute old hash
         const { query: prevQuery, collection: prevCollection } = prevProps
-        const oldHash = MHDBackendClient.hashFetchItemCount(prevCollection, prevQuery)
+        const oldHash = MDHBackendClient.hashFetchItemCount(prevCollection, prevQuery)
 
         // compute new hash
         const { query: newQuery, collection: newCollection } = this.props
-        const newHash = MHDBackendClient.hashFetchItemCount(newCollection, newQuery)
+        const newHash = MDHBackendClient.hashFetchItemCount(newCollection, newQuery)
 
         // if we have different hashes, we need to re-count
         if (oldHash !== newHash) {

@@ -3,9 +3,9 @@ import { default as Link } from "next/link"
 import React from "react"
 import LaTeX from "react-latex"
 import { Button, Col, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Row } from "reactstrap"
-import { MHDBackendClient } from "../../client"
-import type { TMHDCollection } from "../../client/rest"
-import MHDMain from "../../components/common/MHDMain"
+import { MDHBackendClient } from "../../client"
+import type { TMDHCollection } from "../../client/rest"
+import MDHMain from "../../components/common/MDHMain"
 import { CollectionIndex, Home, homePerPage, singleCollection } from "../../controller"
 
 type HomeProps = InferGetServerSidePropsType<typeof getServerSideProps>
@@ -18,7 +18,7 @@ export default function Page({ page, collections: { results, num_pages } }: Home
     const rightHead = <>
         <p />
         <ListGroup>
-            {results.map((c: TMHDCollection) => (
+            {results.map((c: TMDHCollection) => (
                 <ListGroupItem key={c.slug}>
                     <ListGroupItemHeading>
                         <Link href={CollectionIndex(c.slug)}>
@@ -51,7 +51,7 @@ export default function Page({ page, collections: { results, num_pages } }: Home
         </Col>
     </Row>
 
-    return <MHDMain title="Pick a dataset" textTitle="" head={head} leftHead={leftHead} buttons={buttons} rightHead={rightHead} />
+    return <MDHMain title="Pick a dataset" textTitle="" head={head} leftHead={leftHead} buttons={buttons} rightHead={rightHead} />
 }
 
 export const getServerSideProps: GetServerSideProps = async function({ params: { no } }) {
@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async function({ params: {
     const pageNo = parseInt(no as string, 10)
     if (isNaN(pageNo)) return { notFound: true }
 
-    const collections = await MHDBackendClient.getInstance().fetchCollections(pageNo, homePerPage)
+    const collections = await MDHBackendClient.getInstance().fetchCollections(pageNo, homePerPage)
     
     return {
         props: { page: pageNo, collections },

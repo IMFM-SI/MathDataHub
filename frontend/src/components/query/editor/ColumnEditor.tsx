@@ -3,14 +3,14 @@ import { Component } from "react"
 import type { DraggingStyle, DropResult, NotDraggingStyle } from "react-beautiful-dnd"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { Col } from "reactstrap"
-import type { ParsedMHDCollection } from "../../../client/derived"
+import type { ParsedMDHCollection } from "../../../client/derived"
 import WithID from "../../wrappers/withid"
 
 import styles from "./index.module.css" // Import css modules stylesheet as styles
 
 type ColumnEditorProps = {
     /** the current collection */
-    collection: ParsedMHDCollection;
+    collection: ParsedMDHCollection;
 
     /** the initially selected columns */
     columns: string[];

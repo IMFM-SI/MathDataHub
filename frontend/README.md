@@ -1,4 +1,4 @@
-# MHD Frontend
+# MDH Frontend
 
 Website frontend code, a standard [NextJS](https://nextjs.org/) setup. 
 
