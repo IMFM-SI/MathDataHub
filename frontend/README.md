@@ -4,11 +4,11 @@ Website frontend code, a standard [NextJS](https://nextjs.org/) setup.
 
 ## Installation
 
-We use [yarn](https://yarnpkg.com/) to manage dependencies. 
+We use [npm](https://www.npmjs.com/) to manage dependencies.
 To install dependencies, clone this repository and then run
 
 ```
-yarn install
+npm install
 ```
 
 ## Structure
@@ -62,7 +62,7 @@ This can be achieve by something like `python manage.py runserver` (see [Backend
 In parallel, we can then start the react development server with:
 
 ```
-yarn dev
+npm run dev
 ```
 
 By default, this server listens on localhost:3000. 
