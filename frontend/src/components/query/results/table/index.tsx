@@ -1,8 +1,6 @@
-import type { ChangeEvent } from "react"
 import React from "react"
-import style from "./index.module.css"
-
-import { Button, InputGroup, Input } from "reactstrap"
+import { DataGrid } from "@mui/x-data-grid"
+import type { GridColDef } from "@mui/x-data-grid"
 
 type TableProps<D> = TableState & {
 
@@ -15,7 +13,7 @@ type TableProps<D> = TableState & {
 
     // page state -- only relevant for interface
     page: number; // zero-based page number
-    total_pages: number; // the total number of pages, if known 
+    total_pages: number; // the total number of pages, if known
     per_page: number; // number of elements per-page
     per_page_selection: number[]; // available options of per-page
 }
@@ -24,6 +22,7 @@ export type TableColumn<D> = {
     key: React.Key; // key used to uniquely identify this header amongst the other set of columns
     Header: React.ComponentType<ColumnHeaderComponentProps<D>> // component used to render the header
     Cell: React.ComponentType<CellComponentProps<D>> // component used to render cells in this column
+    width?: number; // optional column width in pixels
 }
 
 export type ColumnHeaderComponentProps<D> = {
@@ -40,132 +39,42 @@ export type TableState = {
 }
 
 /**
- * Table implements a fully controlled Table Component
+ * Table implements a fully controlled Table Component using MUI DataGrid (community edition).
+ * Column resizing is enabled by default.
  */
-export default class Table<D> extends React.Component<TableProps<D>> {
-
-    /** gets the current table state from the props */
-    private getTableState = (): TableState => ({
-        per_page: this.props.per_page,
-        page: this.props.page,
+export default function Table<D>({
+    columns, data,
+    page, total_pages, per_page, per_page_selection,
+    onStateChange,
+}: TableProps<D>) {
+    const gridColumns: GridColDef[] = columns.map(col => {
+        const HeaderComponent = col.Header
+        const CellComponent = col.Cell
+        return {
+            field: String(col.key),
+            width: col.width ?? 150,
+            sortable: false,
+            resizable: true,
+            renderHeader: () => <HeaderComponent column={col} />,
+            renderCell: (params) => <CellComponent column={col} data={params.row as D} />,
+        }
     })
 
-    /** handles changing a page */
-    private handlePageChange = (newPage: number) => {
-        this.props.onStateChange({ ...this.getTableState(), page: newPage })
-    }
+    const rowCount = total_pages > 0 ? total_pages * per_page : 0
 
-    /** handles changing a page */
-    private handlePerPageChange = (newPerPage: number) => {
-        const state = this.getTableState()
-        const oldFirstIndex = state.per_page * state.page
-        this.props.onStateChange({
-            ...state,
-            page: Math.floor(oldFirstIndex / newPerPage),
-            per_page: newPerPage,
-        })
-    }
-
-    render() {
-        const { columns, data,
-            page, total_pages, per_page, per_page_selection } = this.props
-
-        const controlTable = <div className={style.Controls}>
-            <div>
-                <TableTablePerPageSelector
-                    per_page={per_page} per_page_selection={per_page_selection}
-                    onChange={this.handlePerPageChange}
-                />
-            </div>
-            <div>
-                <TablePageSelector
-                    page={page} total_pages={total_pages}
-                    onChange={this.handlePageChange}
-                />
-            </div>
-        </div>
-
-        return <>
-            {controlTable}
-
-            <div className={style.ResultsTable}>
-                <table className="table table-bordered">
-
-                    <thead>
-                        <tr>
-                            {columns.map((c: TableColumn<D>, idx: number) => {
-                                const { Header, key } = c
-                                return <th key={(key || idx)}><Header column={c} /></th>
-                            })}
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {data.map((row: D, idx: number) => <tr key={idx}>
-                            {
-                                columns.map((c: TableColumn<D>, idx2: number) => {
-                                    const { Cell, key } = c
-
-                                    return <td key={key || idx2}>
-                                        <Cell column={c} data={row} />
-                                    </td>
-                                })
-                            }
-                        </tr>)}
-                    </tbody>
-                </table>
-            </div>
-            {controlTable}
-        </>
-    }
-}
-
-type TablePerPageSelectorProps = Pick<TableProps<any>, "per_page" | "per_page_selection"> & {
-    onChange: (newPerPage: number) => void;
-}
-
-class TableTablePerPageSelector extends React.Component<TablePerPageSelectorProps> {
-    private handlePerPageChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const newPerPage = this.props.per_page_selection[event.target.selectedIndex]
-        this.props.onChange(newPerPage)
-    }
-    render() {
-        const { per_page, per_page_selection } = this.props
-        return <Input type="select" onChange={this.handlePerPageChange as any} value={"" + per_page}>
-            {per_page_selection.map(pp => {
-                return <option key={pp} value={"" + pp}>{pp}</option>
-            })}
-        </Input>
-    }
-}
-
-type TablePageSelectorProps = Pick<TableProps<any>, "page" | "total_pages"> & {
-    onChange: (newPage: number) => void;
-}
-
-class TablePageSelector extends React.Component<TablePageSelectorProps> {
-    private navigatePrevPage = () => {
-        this.props.onChange(this.props.page - 1)
-    }
-    private navigateNextPage = () => {
-        this.props.onChange(this.props.page + 1)
-    }
-    render() {
-        const { page, total_pages } = this.props
-
-        const has_prev_page = page > 0
-        const has_next_page = page + 1 < total_pages
-
-        return <InputGroup>
-            {has_prev_page ?
-                <Button onClick={this.navigatePrevPage}>&lt;&lt;</Button> :
-                <Button disabled>&lt;&lt;</Button>
-            }
-            <Input disabled style={{ textAlign: "center" }} value={`${page + 1} / ${total_pages}`} />
-            {has_next_page ?
-                <Button onClick={this.navigateNextPage}>&gt;&gt;</Button> :
-                <Button disabled>&gt;&gt;</Button>
-            }
-        </InputGroup>
-    }
+    return (
+        <DataGrid
+            rows={data as any[]}
+            columns={gridColumns}
+            getRowId={(row: any) => row._id ?? row}
+            rowCount={rowCount}
+            paginationMode="server"
+            paginationModel={{ page, pageSize: per_page }}
+            onPaginationModelChange={(model) => onStateChange({ page: model.page, per_page: model.pageSize })}
+            pageSizeOptions={per_page_selection}
+            disableColumnMenu
+            disableRowSelectionOnClick
+            autoHeight
+        />
+    )
 }
