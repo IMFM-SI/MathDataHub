@@ -3,6 +3,6 @@ from __future__ import annotations
 from django.apps import AppConfig
 
 
-class MhdProvenanceConfig(AppConfig):
+class MdhProvenanceConfig(AppConfig):
     name = "mdh_provenance"
     verbose_name = "MathDataHub Provenance"
