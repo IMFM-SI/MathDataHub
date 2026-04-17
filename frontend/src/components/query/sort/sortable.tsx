@@ -1,6 +1,6 @@
 import * as React from "react"
-import type { TagComponentProps } from "react-tag-autocomplete"
-import { default as ReactTags } from "react-tag-autocomplete"
+import { ReactTags } from "react-tag-autocomplete"
+import type { TagSelected, TagSuggestion, TagRendererProps } from "react-tag-autocomplete"
 import { Button } from "reactstrap"
 import { MDHBackendClient } from "../../../client"
 import type { ParsedMDHCollection } from "../../../client/derived"
@@ -8,43 +8,38 @@ import styles from "./sortable.module.css"
 
 const CLASS_NAMES = {
     root: styles["react-tags"],
-    rootFocused: styles["is-focused"],
-    selected: styles["react-tags__selected"],
-    selectedTag: styles["react-tags__selected-tag"],
-    selectedTagName: styles["react-tags__selected-tag-name"],
-    search: styles["react-tags__search"],
-    searchWrapper: styles["react-tags__search-wrapper"],
-    searchInput: styles["react-tags__search-input"],
-    suggestions: styles["react-tags__suggestions"],
-    suggestionActive: styles["is-active"],
-    suggestionDisabled: styles["is-disabled"],
-    suggestionPrefix: styles["react-tags__suggestion-prefix"],
+    rootIsActive: styles["is-focused"],
+    rootIsDisabled: "",
+    rootIsInvalid: "",
+    label: styles["react-tags__label"],
+    tagList: styles["react-tags__selected"],
+    tagListItem: styles["react-tags__selected-tag"],
+    tag: "",
+    tagName: "",
+    comboBox: styles["react-tags__search"],
+    input: styles["react-tags__search-input"],
+    listBox: styles["react-tags__suggestions"],
+    option: styles["react-tags__suggestion"],
+    optionIsActive: styles["is-active"],
+    highlight: styles["react-tags__suggestion-prefix"],
 }
 
-/**
- * A rendered tag
- */
-type Tag = {
-    id: string;
-    name: string;
-}
-
-function makeTagFromID(id: string, { propMap, codecMap }: ParsedMDHCollection): Tag | undefined {
+function makeTagFromID(id: string, { propMap, codecMap }: ParsedMDHCollection): TagSelected | undefined {
     const { mod: tMod, id: tID } = MDHBackendClient.parseSortPart(id)
 
     const prop = propMap.get(tID)
     const codec = codecMap.get(tID)
     if (!prop || !codec.ordered) return undefined
 
-    let name = prop.displayName
+    let label = prop.displayName
     if (tMod === "+") {
-        name += " (Ascending)"
+        label += " (Ascending)"
     }
     if (tMod === "-") {
-        name += " (Descending)"
+        label += " (Descending)"
     }
 
-    return { id, name }
+    return { value: id, label }
 }
 
 type SortableProps = {
@@ -56,8 +51,8 @@ type SortableProps = {
 }
 
 type SortableState = {
-    tags: Array<Tag>
-    suggestions: Array<Tag>
+    tags: TagSelected[]
+    suggestions: TagSuggestion[]
 }
 
 export default class Sortable extends React.Component<SortableProps, SortableState> {
@@ -69,57 +64,43 @@ export default class Sortable extends React.Component<SortableProps, SortableSta
 
     static getDerivedStateFromProps({ collection, value: order }: SortableProps, state: SortableState): Partial<SortableState> {
         const tags = order.split(",")
-            .map( id => makeTagFromID(id, collection))
-            .filter(tag => typeof tag !== "undefined")
-        
+            .map(id => makeTagFromID(id, collection))
+            .filter((tag): tag is TagSelected => tag !== undefined)
+
         const suggestions = collection.properties.flatMap(({ slug }) => [
-            makeTagFromID(slug, collection), 
+            makeTagFromID(slug, collection),
             makeTagFromID(`+${slug}`, collection),
             makeTagFromID(`-${slug}`, collection),
-        ]).filter(tag => typeof tag !== "undefined")
+        ]).filter((tag): tag is TagSuggestion => tag !== undefined)
 
-        return {
-            tags,
-            suggestions,
-        }
+        return { tags, suggestions }
     }
 
-    /** turns a list of tags into a seralized tstae */
-    private static tagsToOrder(tags: Array<Tag>): string {
-        return tags.map(t => t.id).join(",")
+    private static tagsToOrder(tags: TagSelected[]): string {
+        return tags.map(t => String(t.value)).join(",")
     }
 
-    /**
-     * Called when a new tag is added to the list
-     * @param tag 
-     */
-    private readonly onAddition = (tag: Tag) => {
-        const tags = [].concat(this.state.tags, tag)
-        this.props.onChange(
-            Sortable.tagsToOrder(tags)
-        )
+    private readonly onAdd = (tag: TagSelected) => {
+        const tags = [...this.state.tags, tag]
+        this.props.onChange(Sortable.tagsToOrder(tags))
     }
 
-    /**
-     * Called when an item is removed from the list
-     * @param index 
-     */
     private readonly onDelete = (index: number) => {
         const tags = this.state.tags.slice(0)
         tags.splice(index, 1)
-        this.props.onChange(
-            Sortable.tagsToOrder(tags)
-        )
+        this.props.onChange(Sortable.tagsToOrder(tags))
     }
-    private readonly suggestionsFilter = (tag: Tag, query: string) => {
-        const { mod: tMod, id: tID } = MDHBackendClient.parseSortPart(tag.id)
-        const { mod: qMod, id: qID } = MDHBackendClient.parseSortPart(query)
-        
-        return (
-            tag.name.startsWith(qID) || tID.startsWith(qID)
-        ) && (
-            qMod === "" ||tMod === qMod
-        )
+
+    private readonly suggestionsTransform = (value: string, suggestions: TagSuggestion[]): TagSuggestion[] => {
+        const { mod: qMod, id: qID } = MDHBackendClient.parseSortPart(value)
+        return suggestions.filter(tag => {
+            const { mod: tMod, id: tID } = MDHBackendClient.parseSortPart(String(tag.value))
+            return (
+                tag.label.startsWith(qID) || tID.startsWith(qID)
+            ) && (
+                qMod === "" || tMod === qMod
+            )
+        })
     }
 
     render() {
@@ -128,26 +109,22 @@ export default class Sortable extends React.Component<SortableProps, SortableSta
         return <ReactTags
             classNames={CLASS_NAMES}
             id={id}
-            minQueryLength={1}
 
-            tags={tags}
+            selected={tags}
             suggestions={suggestions}
-            suggestionsFilter={this.suggestionsFilter}
+            suggestionsTransform={this.suggestionsTransform}
             placeholderText="Add another field"
-            
-            onAddition={this.onAddition}
+
+            onAdd={this.onAdd}
             onDelete={this.onDelete}
 
-            tagComponent={TagComponent as any}
+            renderTag={TagComponent}
         />
     }
 }
 
-class TagComponent extends React.Component<TagComponentProps> {
-    render() {
-        const { tag, onDelete } = this.props
-        return <Button outline size="sm" onClick={onDelete} style={{ margin: 5 }}>
-            {tag.name}
-        </Button>
-    }
+function TagComponent({ tag, classNames: _, ...buttonProps }: TagRendererProps) {
+    return <Button outline size="sm" style={{ margin: 5 }} {...buttonProps}>
+        {tag.label}
+    </Button>
 }
