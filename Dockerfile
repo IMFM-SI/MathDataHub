@@ -9,7 +9,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Add dependencies
 RUN mkdir -p /var/www/api/admin/static/ \
-    && apk add --no-cache bash postgresql-libs postgresql-client pcre-dev libffi-dev mailcap supervisor yarn \
+    && apk add --no-cache bash postgresql-libs postgresql-client pcre-dev libffi-dev mailcap supervisor npm \
     && apk add --no-cache --virtual .build-deps gcc g++ musl-dev postgresql-dev linux-headers python3-dev \
     && UV_PROJECT_ENVIRONMENT="/usr/local" uv sync --locked \
     && apk --purge del .build-deps
@@ -23,8 +23,8 @@ ADD frontend /app/frontend
 WORKDIR /app/frontend
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN yarn install --frozen-lockfile --production
-RUN yarn build --no-lint
+RUN npm install
+RUN npm run build --no-lint
 
 FROM base as final
 ARG DJANGO_SECRET_KEY=something-insecure
