@@ -1,17 +1,20 @@
 # Add all the dependencies
-FROM python:3.11-alpine as base
+FROM python:3.13-alpine as base
 
 # Add requirements and install dependencies
 WORKDIR /app/
-ADD requirements.txt /app/
-ADD requirements-prod.txt /app/
+ADD pyproject.toml /app/
+ADD uv.lock /app/
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Add dependencies
 RUN mkdir -p /var/www/api/admin/static/ \
-    && apk add --no-cache bash postgresql-libs postgresql-client pcre-dev libffi-dev mailcap supervisor yarn \
+    && apk add --no-cache bash postgresql-libs postgresql-client pcre-dev libffi-dev mailcap supervisor npm \
     && apk add --no-cache --virtual .build-deps gcc g++ musl-dev postgresql-dev linux-headers python3-dev \
-    && pip install -r requirements.txt -r requirements-prod.txt --no-cache-dir \
+    && UV_PROJECT_ENVIRONMENT="/usr/local" uv sync --locked \
     && apk --purge del .build-deps
+
+ENV PATH="/app/.venv/bin:$PATH"
 
 FROM base as frontend
 
@@ -20,13 +23,13 @@ ADD frontend /app/frontend
 WORKDIR /app/frontend
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN yarn install --frozen-lockfile --production
-RUN yarn build --no-lint
+RUN npm install
+RUN npm run build --no-lint
 
 FROM base as final
 ARG DJANGO_SECRET_KEY=something-insecure
 ARG DJANGO_DB_ENGINE "django.db.backends.sqlite3"
-ARG DJANGO_DB_NAME "/data/mhd.db"
+ARG DJANGO_DB_NAME "/data/mdh.db"
 ARG DJANGO_DB_USER ""
 ARG DJANGO_DB_PASSWORD ""
 ARG DJANGO_DB_HOST ""
@@ -34,17 +37,17 @@ ARG DJANGO_DB_PORT ""
 
 # Install Django App, configure settings and copy over djano app
 ADD manage.py /app/
-ADD mhd/ /app/mhd/
-ADD mhd_data/ /app/mhd_data/
-ADD mhd_provenance/ /app/mhd_provenance/
-ADD mhd_schema/ /app/mhd_schema/
-ADD mhd_tests/ /app/mhd_tests/
+ADD mdh/ /app/mdh/
+ADD mdh_data/ /app/mdh_data/
+ADD mdh_provenance/ /app/mdh_provenance/
+ADD mdh_schema/ /app/mdh_schema/
+ADD mdh_tests/ /app/mdh_tests/
 ADD mddl_catalog/ /app/mddl_catalog/
 ADD mviews/ /app/mviews/
 
 ### ALL THE CONFIGURATION
 
-ENV DJANGO_SETTINGS_MODULE "mhd.docker_settings"
+ENV DJANGO_SETTINGS_MODULE "mdh.docker_settings"
 ENV DJANGO_SECRET_KEY $DJANGO_SECRET_KEY
 ENV DJANGO_DB_ENGINE $DJANGO_DB_ENGINE
 ENV DJANGO_DB_NAME $DJANGO_DB_NAME

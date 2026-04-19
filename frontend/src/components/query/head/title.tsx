@@ -1,18 +1,18 @@
 import * as React from "react"
 import LaTeX from "react-latex"
 import { Badge, Tooltip } from "reactstrap"
-import type { TMHDCollection } from "../../../client/rest"
+import type { TMDHCollection } from "../../../client/rest"
 import { isProduction } from "../../../controller"
 import WithID from "../../wrappers/withid"
 
-export default class CollectionTitle extends React.Component<{ collection: TMHDCollection }> {
+export default class CollectionTitle extends React.Component<{ collection: TMDHCollection }> {
     render() {
         const { collection: { displayName } } = this.props
         return <LaTeX>{displayName}</LaTeX>
     }
 }
 
-export class CollectionFlags extends React.Component<{ collection: TMHDCollection }> {
+export class CollectionFlags extends React.Component<{ collection: TMDHCollection }> {
     render() {
         const { collection: { hidden, flag_large_collection, count } } = this.props
         return <p>

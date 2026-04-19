@@ -1,0 +1,56 @@
+{
+    "displayName": "Functions on $\\mathbb{Z}/3\\mathbb{Z}$",
+    "flag_large_collection": false, 
+    "hidden": false,
+    "slug": "z3zFunctions",
+    "description": "Functions from $\\mathbb{Z}/3\\mathbb{Z}$ onto itself. ",
+    "url": "https://github.com/IMFM-SI/MathDataHub#z3z-functions",
+    "metadata": {
+        "uri": "https://mathhub.com/examples/?Z3ZFunction"
+    },
+    "exporters": ["json"],
+    "template": {
+        "file": "simple_template.jinja2"
+    },
+    "preFilters": [{
+        "description": "f0 = 1",
+        "condition": "f0 = 1",
+        "count": null
+    }],
+    "properties": [
+        {
+            "slug": "f0",
+            "displayName": "f(0)",
+            "default": true,
+            "codec": "StandardInt",
+            "description": "Value at $f = 0$",
+            "url": "https://mathhub.com/examples/?Z3ZFunction?f0",
+            "metadata": {
+                "uri": "https://mathhub.com/examples/?Z3ZFunction?f0"
+            }
+        },
+        {
+            "slug": "f1",
+            "displayName": "f(1)",
+            "default": true,
+            "codec": "StandardInt",
+            "description": "Value at $f = 1$",
+            "url": "https://mathhub.com/examples/?Z3ZFunction?f1",
+            "metadata": {
+                "uri": "https://mathhub.com/examples/?Z3ZFunction?f1"
+            }
+        },
+        {
+            "slug": "f2",
+            "displayName": "f(2)",
+            "default": true,
+            "codec": "StandardInt",
+            "description": "Value at $f = 2$",
+            "url": "https://mathhub.com/examples/?Z3ZFunction?f2",
+            "metadata": {
+                "uri": "https://mathhub.com/examples/?Z3ZFunction?f2"
+            }
+        }
+    ],
+    "count": null
+}

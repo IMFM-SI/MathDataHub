@@ -1,5 +1,5 @@
 import React from "react"
-import type { TMHDProperty, TMHDItem } from "../client/rest"
+import type { TMDHProperty, TMDHItem } from "../client/rest"
 import { Badge } from "reactstrap"
 import { isProduction } from "../controller"
 import { CopyButton } from "../components/wrappers/share"
@@ -107,11 +107,11 @@ export default abstract class Codec<ElementType = any, FilterType = string> {
      * Makes a React-Table Column for an instatiation of this codec.
      * @param property 
      */
-    makeReactTableColumn(property: TMHDProperty): TableColumn<TMHDItem<any>> {
+    makeReactTableColumn(property: TMDHProperty): TableColumn<TMDHItem<any>> {
         return {
             key: property.slug,
             Header: () => <PropertyHeader property={property} />,
-            Cell: ({ data }: CellComponentProps<TMHDItem<any>>) => <RenderCodec context={CellRenderContext.Table} value={data[property.slug]} codec={this} />,
+            Cell: ({ data }: CellComponentProps<TMDHItem<any>>) => <RenderCodec context={CellRenderContext.Table} value={data[property.slug]} codec={this} />,
         }
     }
 
@@ -132,7 +132,7 @@ export default abstract class Codec<ElementType = any, FilterType = string> {
      * determines if a property with this codec should be hidden from the filter list
      * By default hides every property iff it does not have an associated _filterViewerComponent 
      */
-    hiddenFromFilterList(property: TMHDProperty): boolean {
+    hiddenFromFilterList(property: TMDHProperty): boolean {
         return !this._filterViewerComponent || !this._filterEditorComponent
     }
 

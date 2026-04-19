@@ -1,21 +1,21 @@
 import type { TCollectionPredicate } from "../client"
-import { MHDBackendClient } from "../client"
-import type { ParsedMHDCollection } from "../client/derived"
-import type { TMHDItem } from "../client/rest"
+import { MDHBackendClient } from "../client"
+import type { ParsedMDHCollection } from "../client/derived"
+import type { TMDHItem } from "../client/rest"
 
-export abstract class ClientSideExporter<Flags, Accumulator, Result, Page = Array<TMHDItem<unknown>>> {
+export abstract class ClientSideExporter<Flags, Accumulator, Result, Page = Array<TMDHItem<unknown>>> {
     abstract readonly slug: string
     abstract readonly displayName: string
     abstract readonly defaultExtension: string
 
     /** initAcc initializes the accumulator */
-    protected abstract initAcc(flags: Flags, collection: ParsedMHDCollection): Promise<Accumulator | null>
+    protected abstract initAcc(flags: Flags, collection: ParsedMDHCollection): Promise<Accumulator | null>
 
     /** getPage gets the page for a set of items */
-    protected abstract getPage(items: Array<TMHDItem<unknown>>, flags: Flags): Page
+    protected abstract getPage(items: Array<TMDHItem<unknown>>, flags: Flags): Page
 
     /** updateAcc updates the accumulator for a given state */
-    protected abstract updateAcc(page: Page, index: number, acc: Accumulator, flags: Flags, collection: ParsedMHDCollection): Promise<Accumulator | null>
+    protected abstract updateAcc(page: Page, index: number, acc: Accumulator, flags: Flags, collection: ParsedMDHCollection): Promise<Accumulator | null>
 
     /** finalizeAcc finalizes the accumulator */
     protected abstract getResult(acc: Accumulator, done: boolean, flags: Flags): Promise<Result | null>
@@ -23,8 +23,8 @@ export abstract class ClientSideExporter<Flags, Accumulator, Result, Page = Arra
     protected readonly PER_PAGE = 1000
 
     /** run runs this ClientSideExporter */
-    async run(flags: Flags, slug_or_collection: string | ParsedMHDCollection, query: TCollectionPredicate, order: string, onStep: (progress: number) => boolean): Promise<Result> {
-        const client = MHDBackendClient.getInstance()
+    async run(flags: Flags, slug_or_collection: string | ParsedMDHCollection, query: TCollectionPredicate, order: string, onStep: (progress: number) => boolean): Promise<Result> {
+        const client = MDHBackendClient.getInstance()
 
         // make a promise for the entire collection
         const slug = typeof slug_or_collection === "string" ? slug_or_collection : slug_or_collection.slug

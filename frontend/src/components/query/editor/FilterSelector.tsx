@@ -1,9 +1,9 @@
 import React from "react"
 import { Col } from "reactstrap"
-import type { MHDFilter, ParsedMHDCollection } from "../../../client/derived"
+import type { MDHFilter, ParsedMDHCollection } from "../../../client/derived"
 import type { TValidationResult } from "../../../codecs/codec"
 import type Codec from "../../../codecs/codec"
-import type { TMHDProperty } from "../../../client/rest"
+import type { TMDHProperty } from "../../../client/rest"
 import styles from "./FilterSelector.module.css"
 import PropertyHover from "../../common/PropertyInfoButton"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -11,7 +11,7 @@ import { faPlus, faMinus, faCheck, faPen } from "@fortawesome/free-solid-svg-ico
 
 type FilterSelectorProps = {
     /** the current collection */
-    collection: ParsedMHDCollection;
+    collection: ParsedMDHCollection;
 
     /** the initially set filters */
     filters: IdentifiedFilter[];
@@ -20,7 +20,7 @@ type FilterSelectorProps = {
     onFilterUpdate: (filters: IdentifiedFilter[]) => void;
 }
 
-type IdentifiedFilter = MHDFilter & {
+type IdentifiedFilter = MDHFilter & {
     uid?: React.Key,
     initialEdit?: boolean;
 }
@@ -126,7 +126,7 @@ export default class FilterSelector extends React.Component<FilterSelectorProps>
 
 type TSelectedFilterProps<S, T> = {
     /** the schema of this filter */
-    property: TMHDProperty;
+    property: TMDHProperty;
 
     /** the values of this codec */
     codec: Codec<S, T>,
@@ -135,7 +135,7 @@ type TSelectedFilterProps<S, T> = {
     filter: IdentifiedFilter;
 
     /** callback when a value has been updated */
-    onApplyFilter: (value: MHDFilter["value"]) => void;
+    onApplyFilter: (value: MDHFilter["value"]) => void;
 
     /** called when a filter is removed */
     onRemoveFilter: () => void;

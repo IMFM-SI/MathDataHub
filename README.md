@@ -1,10 +1,10 @@
-[![Frontend Tests](https://github.com/MathHubInfo/mhd/actions/workflows/frontend.yml/badge.svg)](https://github.com/MathHubInfo/mhd/actions/workflows/frontend.yml)
-[![Backend Tests](https://github.com/MathHubInfo/mhd/actions/workflows/backend.yml/badge.svg)](https://github.com/MathHubInfo/mhd/actions/workflows/backend.yml)
-[![Docker Build](https://github.com/MathHubInfo/mhd/actions/workflows/docker_build.yml/badge.svg)](https://github.com/MathHubInfo/mhd/actions/workflows/docker_build.yml)
+[![Frontend Tests](https://github.com/IMFM-SI/MathDataHub/actions/workflows/frontend.yml/badge.svg)](https://github.com/IMFM-SI/MathDataHub/actions/workflows/frontend.yml)
+[![Backend Tests](https://github.com/IMFM-SI/MathDataHub/actions/workflows/backend.yml/badge.svg)](https://github.com/IMFM-SI/MathDataHub/actions/workflows/backend.yml)
+[![Docker Build](https://github.com/IMFM-SI/MathDataHub/actions/workflows/docker_build.yml/badge.svg)](https://github.com/IMFM-SI/MathDataHub/actions/workflows/docker_build.yml)
 
 # MathDataHub
 
-[MathDataHub](https://github.com/MathHubInfo/mhd) started out as a complete redesign of the [DiscreteZOO web portal](https://github.com/orgs/DiscreteZOO/) at the Research Group of the Professorship for Knowledge Representation and Processing ([KWARC](https://kwarc.info/)) at [FAU Erlangen-Nürnberg](https://fau.de/) (department of Computer Science), during the years 2019-2022. 
+[MathDataHub](https://github.com/IMFM-SI/MathDataHub) started out as a complete redesign of the [DiscreteZOO web portal](https://github.com/orgs/DiscreteZOO/) at the Research Group of the Professorship for Knowledge Representation and Processing ([KWARC](https://kwarc.info/)) at [FAU Erlangen-Nürnberg](https://fau.de/) (department of Computer Science), during the years 2019-2022.
 
 This repository contains the MathDataHub Implementation consisting of a [Django](https://www.djangoproject.com/)-powered backend and [NextJS](https://nextjs.org/)-powered frontend.
 
@@ -17,55 +17,67 @@ See [frontend/README.md](frontend/README.md) for more details.
 
 ### This document
 
-1. [Code structure](https://github.com/MathHubInfo/mhd/blob/main/README.md#code-structure)
-2. [Development](https://github.com/MathHubInfo/mhd/blob/main/README.md#development)
-    1. [Local Postgres instance for testing](https://github.com/MathHubInfo/mhd/blob/main/README.md#local-postgres-instance-for-testing)
-3. [Database structure](https://github.com/MathHubInfo/mhd/blob/main/README.md#database-structure)
-4. [Management commands](https://github.com/MathHubInfo/mhd/blob/main/README.md#management-commands)
-5. [Codec catalog](https://github.com/MathHubInfo/mhd/blob/main/README.md#codec-catalog)
-6. [URL structure](https://github.com/MathHubInfo/mhd/blob/main/README.md#url-structure)
-    1. [Main querying syntax](https://github.com/MathHubInfo/mhd/blob/main/README.md#main-querying-syntax)
-7. [Tests & code style](https://github.com/MathHubInfo/mhd/blob/main/README.md#tests--code-style)
-8. [Adding a new codec](https://github.com/MathHubInfo/mhd/blob/main/README.md#adding-a-new-codec)
-    1. [Backend](https://github.com/MathHubInfo/mhd/blob/main/README.md#backend)
-    2. [Frontend](https://github.com/MathHubInfo/mhd/blob/main/README.md#frontend)
-9. [Data Examples](https://github.com/MathHubInfo/mhd/blob/main/README.md#data-examples)
-    1. [Z3Z Functions](https://github.com/MathHubInfo/mhd/blob/main/README.md#z3z-functions)
-    2. [Additive Bases](https://github.com/MathHubInfo/mhd/blob/main/README.md#additive-bases)
-    3. [Math Data Workshop](https://github.com/MathHubInfo/mhd/blob/main/README.md#math-data-workshop)
-10. [Using (materialized) views](https://github.com/MathHubInfo/mhd/blob/main/README.md#using-materialized-views)
-11. [Deployment](https://github.com/MathHubInfo/mhd/blob/main/README.md#deployment)
-12. [License](https://github.com/MathHubInfo/mhd/blob/main/README.md#deployment)
+1. [Code structure](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#code-structure)
+2. [Development](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#development)
+    1. [Local Postgres instance for testing](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#local-postgres-instance-for-testing)
+3. [Database structure](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#database-structure)
+4. [Management commands](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#management-commands)
+5. [Codec catalog](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#codec-catalog)
+6. [URL structure](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#url-structure)
+    1. [Main querying syntax](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#main-querying-syntax)
+7. [Tests & code style](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#tests--code-style)
+8. [Adding a new codec](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#adding-a-new-codec)
+    1. [Backend](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#backend)
+    2. [Frontend](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#frontend)
+9. [Data Examples](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#data-examples)
+    1. [Z3Z Functions](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#z3z-functions)
+    2. [Additive Bases](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#additive-bases)
+    3. [Math Data Workshop](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#math-data-workshop)
+10. [Using (materialized) views](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#using-materialized-views)
+11. [Deployment](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#deployment)
+12. [License](https://github.com/IMFM-SI/MathDataHub/blob/main/README.md#deployment)
 
 ### Other documents
 
-* [Frontend documentation](https://github.com/MathHubInfo/mhd/blob/main/frontend/README.md)
+* [Frontend documentation](https://github.com/IMFM-SI/MathDataHub/blob/main/frontend/README.md)
 
 ## Code structure
 
 The top-level structure of this repository consists of a standard [Django](https://www.djangoproject.com/) project.
 There are six apps:
 
-- `mhd`: The main entry point. Contains a `utils/` package used by other apps.
-- `mhd_schema`: Stores schema of MHD data. Home of the `Collection` and `Property` tables.
-- `mhd_data`: Stores all concrete MHD data. Home of the `Item` and all `Codec` tables.
-- `mhd_provenance`: Stores meta-information about MHD data. Home of the `Provenance` tables.
-- `mhd_test`: Test-only app for specific test models
+- `mdh`: The main entry point. Contains a `utils/` package used by other apps.
+- `mdh_schema`: Stores schema of MDH data. Home of the `Collection` and `Property` tables.
+- `mdh_data`: Stores all concrete MDH data. Home of the `Item` and all `Codec` tables.
+- `mdh_provenance`: Stores meta-information about MDH data. Home of the `Provenance` tables.
+- `mdh_test`: Test-only app for specific test models
 - `mddl_catalog`: Catalog of specific MDDL items, currently only codecs.
 
-Currently, MHD depends only on Django and [Django Rest Framework](https://www.django-rest-framework.org/).
+Currently, MDH depends only on Django and [Django Rest Framework](https://www.django-rest-framework.org/).
 To install the dependencies, first make sure you have a recent enough version of Python installed on your system.
-You can then install the requirements inside a new [venv](https://docs.python.org/3/library/venv.html):
+The project uses Astral's `uv` to manage dependencies and Python
+environments, so make sure you have that installed by following the
+instructions in [its manual](https://docs.astral.sh/uv/getting-started/installation/).
+Once that is set up and functioning, you can set up your local
+environment like so:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+uv sync
 ```
+
+A virtual environment will be created in `.venv/`, which you can
+activate in the usual way:
+
+```bash
+. .venv/bin/activate
+```
+
+All commands below will then work as normal.
 
 ## Development
 
-** To run this, you need Python 3.11+. We recommend using Python 3.11. **
+** To run this, you need Python 3.13+. We recommend using the latest
+available version of Python. **
 
 By default, MathDataHub uses an `sqlite` database.
 To get started, you can run the initial migrations:
@@ -90,18 +102,18 @@ Furthermore, for debugging purposes it is also possible to log all queries to th
 To do so, start the server with:
 
 ```bash
-MHD_LOG_QUERIES=1 python manage.py runserver
+MDH_LOG_QUERIES=1 python manage.py runserver
 ```
 
-To additionally customize development settings, create a file named `mhd/local_settings.py`.
-This will be automatically loaded by mhd during configuration time.
+To additionally customize development settings, create a file named `mdh/local_settings.py`.
+This will be automatically loaded by mdh during configuration time.
 
 ### Local Postgres instance for testing
 
 ```bash
 # update the local confiuration file and configure postgres
 echo "DATABASES = { 'default': { 'ENGINE': 'django.db.backends.postgresql', 'NAME': 'postgres', 'USER': 'postgres', 'HOST': 'localhost', 'PORT': 5432 } }" \
-    >> mhd/local_settings.py
+    >> mdh/local_settings.py
 
 # every time you need to start the database, run:
 docker run --rm -it -p 127.0.0.1:5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -v pgdata:/var/lib/postgresql/data --shm-size=1g postgres
@@ -219,15 +231,27 @@ In addition round brackets can be used for grouping.
 For the backend, tests for every important feature exist, and are run by GitHub Actions on every commit.
 Note that tests are run both on `sqlite` and `postgres`.
 
-To be able to run the tests, you first need to install the development dependencies:
+The development dependencies needed to run the tests should have already
+been installed by `uv`; in case you synced your environment with
+`--no-dev` or similar when settig it up, you need to add them by using
+the `dev` dependency group. If you're unsure or just need a shorthand,
+use:
 
 ```
-pip install -r requirements-dev.txt
+uv sync
 ```
 
 Then you can run the tests with:
 
 ```bash
+uv run pytest
+```
+
+or more traditionally by activating the virtual environment manually
+with:
+
+```bash
+. .venv/bin/activate
 pytest
 ```
 
@@ -235,17 +259,17 @@ One non-feature related test is the CodeStyle test.
 This enforces [PEP8](https://pep8.readthedocs.io)-compliance except for maximum line length.
 
 Additionally, a test-only app exists with specific models only used during testing.
-To manually enable for local development add `USE_TEST_APP = True` to `mhd/local_settings.py`.
+To manually enable for local development add `USE_TEST_APP = True` to `mdh/local_settings.py`.
 
 ## Adding a new codec
 
 ### Backend
 
-In `mhd_data/models/codecs` add a class (in its own file) extending the abstract class Codec and a line in `__init__.py`
+In `mdh_data/models/codecs` add a class (in its own file) extending the abstract class Codec and a line in `__init__.py`
 
 ### Frontend
 
-In `frontend/src/codecs/impl` add a class extending the React class Codec. 
+In `frontend/src/codecs/impl` add a class extending the React class Codec.
 
 ## Data Examples
 
@@ -254,8 +278,8 @@ In `frontend/src/codecs/impl` add a class extending the React class Codec.
 After setting up the project (see Project Structure and Setup), run the following two commands (to create the collection and to insert data).
 
 ```bash
-python manage.py upsert_collection mhd_data/tests/res/z3z_collection.json
-python manage.py insert_data mhd_data/tests/res/z3z_data.json --collection "z3zFunctions" -f "f0,f1,f2,invertible,label" -p mhd_data/tests/res/z3z_provenance.json
+python manage.py upsert_collection mdh_data/tests/res/z3z_collection.json
+python manage.py insert_data mdh_data/tests/res/z3z_data.json --collection "z3zFunctions" -f "f0,f1,f2,invertible,label" -p mdh_data/tests/res/z3z_provenance.json
 ```
 
 Here is an example of a query URL:
@@ -269,13 +293,13 @@ http://localhost:8000/api/query/z3zFunctions/?properties=f1,f2&filter=f1%3Df2%26
 To import a second collection for testing, use:
 
 ```bash
-python manage.py upsert_collection mhd_data/tests/res/ab_collection.json
-python manage.py insert_data mhd_data/tests/res/ab_data.json --collection "ab" -f "basis,k,n,S,R" -p mhd_data/tests/res/ab_provenance.json
+python manage.py upsert_collection mdh_data/tests/res/ab_collection.json
+python manage.py insert_data mdh_data/tests/res/ab_data.json --collection "ab" -f "basis,k,n,S,R" -p mdh_data/tests/res/ab_provenance.json
 ```
 
 ### Math Data Workshop
 
-The first batch of [dataset examples](https://github.com/OpenDreamKit/MathDataWorkshop/tree/master/collections) was collected at the [OpenDreamKit workshop on data in mathematics](https://opendreamkit.org/2019/08/17/WorkshopOnDataInMathematics/). 
+The first batch of [dataset examples](https://github.com/OpenDreamKit/MathDataWorkshop/tree/master/collections) was collected at the [OpenDreamKit workshop on data in mathematics](https://opendreamkit.org/2019/08/17/WorkshopOnDataInMathematics/).
 
 
 ## Using (materialized) views
@@ -312,7 +336,7 @@ python manage.py collection_view --disable collection_slug
 python manage.py collection_view --sync --enable collection_slug
 ```
 
-**WARNING**: When views are not syncronized, it is possible for query results to give invalid results or break entirely. 
+**WARNING**: When views are not syncronized, it is possible for query results to give invalid results or break entirely.
 In particular, when updating or amending a collection, it is recommended to first disable the view for the respective collection and re-enabling it once the update is complete.
 
 ## Unlisted Collections
@@ -331,7 +355,7 @@ python manage.py collection_list --unlist collection_slug
 
 ## Deployment
 
-![Docker Image](https://github.com/MathHubInfo/mhd/actions/workflows/docker/badge.svg)
+![Docker Image](https://github.com/IMFM-SI/MathDataHub/actions/workflows/docker/badge.svg)
 
 Deployment only makes sense in conjunction with the frontend.
 To achieve the url structure expected by the frontend, we need to serve the backend and frontend on the same domain.
@@ -355,11 +379,11 @@ The config can be found in [docker/supervisor.conf](docker/supervisor.conf).
 
 This repository contains a `Dockerfile` to enable deployment using [Docker](https://www.docker.com/).
 It listens on port 80 and uses an sqlite database stored in a volume mounted at `/data/`.
-GitHub Actions build a new image on every commit that is available under [ghcr.io/mathhubinfo/mhd](https://github.com/mathhubinfo/mhd/pkgs/container/mhd).
+GitHub Actions build a new image on every commit that is available under [ghcr.io/IMFM-SI/MathDataHub](https://github.com/IMFM-SI/MathDataHub/pkgs/container/mdh).
 It can be run with a command like the following:
 
 ```
-   docker run -e DJANGO_SECRET_KEY=totally_secret_key_here -p 8000:80 -v data:/data/ ghcr.io/mathhubinfo/mhd:latest
+   docker run -e DJANGO_SECRET_KEY=totally_secret_key_here -p 8000:80 -v data:/data/ ghcr.io/IMFM-SI/MathDataHub:latest
 ```
 
 ## License

@@ -8,5 +8,5 @@ jobs:
     name: Build the Docker Image
 
     steps:
-    - uses: actions/checkout@v2
-    - run: docker build -t mathhub/mhd .
+    - uses: actions/checkout@v6
+    - run: docker build -t imfm-si/mdh .

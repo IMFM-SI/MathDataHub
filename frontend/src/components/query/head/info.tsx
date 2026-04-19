@@ -4,12 +4,12 @@ import Link from "next/link"
 import * as React from "react"
 import LaTeX from "react-latex"
 import { Button } from "reactstrap"
-import type { TMHDCollection } from "../../../client/rest"
+import type { TMDHCollection } from "../../../client/rest"
 import { CollectionProvenance } from "../../../controller"
 import { ShareThisPage } from "../../wrappers/share"
 
 type CollectionInfoProps = {
-    collection: TMHDCollection
+    collection: TMDHCollection
 }
 
 export default class CollectionInfo extends React.Component<CollectionInfoProps> {
