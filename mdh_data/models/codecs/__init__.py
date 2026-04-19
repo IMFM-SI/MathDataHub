@@ -15,3 +15,5 @@ from .coveringrelationasdigraph6 import CoveringRelationAsDigraph6
 from .graphlabel import GraphLabel
 
 from .magmagraphcode import MagmaGraphCode
+
+from .externallink import ExternalLink, ExternalSource
