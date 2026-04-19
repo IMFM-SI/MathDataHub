@@ -13,6 +13,7 @@ import PolynomialAsSparseArray from "./impl/PolynomialAsSparseArray"
 import FactorizationAsSparseArray from "./impl/FactorizationAsSparseArray"
 import GraphLabel from "./impl/GraphLabel"
 import MagmaGraphCode from "./impl/MagmaGraphCode"
+import ExternalLink from "./impl/ExternalLink"
 
 /**
  * Manages all known codecs
@@ -36,6 +37,7 @@ export default class CodecManager {
         this.register(new ListAsArray(new StandardJSON()))
         this.register(new GraphLabel())
         this.register(new MagmaGraphCode())
+        this.register(new ExternalLink())
     }
 
     /** registers a codec with this codec manager */
